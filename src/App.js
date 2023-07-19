@@ -1,24 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import "./App.css";
+import AllProducts from "./components/allProducts/AllProducts";
+import Login from "./components/login/Login";
+import { ProductsContextProvider } from "./context/ProductsContext";
+import Add from "./components/actions/Add";
+import toast, { Toaster } from 'react-hot-toast';
+import Update from "./components/actions/Update";
+
+let routers = createBrowserRouter([
+  {  path:"/", element: <AllProducts /> },
+  { path: "/login", element: <Login /> },
+  { path: "/add", element: <Add /> },
+  { path: "/update", element: <Update /> },
+]);
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <ProductsContextProvider>
+        <Toaster/>
+        <RouterProvider router={routers}></RouterProvider>
+      </ProductsContextProvider>
+    </>
   );
 }
 
