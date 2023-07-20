@@ -18,12 +18,9 @@ function Update() {
 
   // console.log(productid)
   async function editeNow(values) {
-    console.log(id,values);
-
-    await editeProduct(id,values);
- 
-
-
+    console.log(id, values);
+    const response = await editeProduct(id, values);
+    console.log(response);
   }
 
   let formik = useFormik({

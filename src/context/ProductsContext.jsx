@@ -3,59 +3,56 @@ import axios from "axios";
 import React, { createContext, useState } from "react";
 // import { toast } from "react-hot-toast";
 
-
 export let productsContext = createContext();
 export function ProductsContextProvider(props) {
-
-
   const headers = {
     token: `Bearer ${localStorage.getItem("UserToken")}`,
   };
 
-
   async function handleLogin(values) {
     return await axios
       .post(
-        `https://ali-service-ey1c.onrender.com/api/team2/auth/login`, values
-
+        `https://ali-service-ey1c.onrender.com/api/team2/auth/login`,
+        values
       )
-      .then(response => response)
+      .then((response) => response)
       .catch((error) => error);
   }
-
-
 
   // const [products, setProducts] = useState([]);
   async function getProducts(uId) {
     // console.log(uId)
-    return await axios.get(
-      `https://ali-service-ey1c.onrender.com/api/team2/products?seller=${uId}`,
-      { headers: { 'Authorization': headers.token } }
-    ).then(response => response).catch(err => err)
-
+    return await axios
+      .get(
+        `https://ali-service-ey1c.onrender.com/api/team2/products?seller=${uId}`,
+        { headers: { Authorization: headers.token } }
+      )
+      .then((response) => response)
+      .catch((err) => err);
   }
-
-
 
   // Delete Seller Product
 
   async function deleteProduct(id) {
-    return await axios.delete(
-      `https://ali-service-ey1c.onrender.com/api/team2/products/${id}`,
-      { headers: { 'Authorization': headers.token } }
-    ).then(response => response).catch(err => err)
-
+    return await axios
+      .delete(
+        `https://ali-service-ey1c.onrender.com/api/team2/products/${id}`,
+        { headers: { Authorization: headers.token } }
+      )
+      .then((response) => response)
+      .catch((err) => err);
   }
 
   // update
 
-
   async function getOneProduct(productId) {
-    return await axios.get(
-      `https://ali-service-ey1c.onrender.com/api/team2/products/${productId}`,
-      { headers: { 'Authorization': headers.token } }
-    ).then(res => res).catch(err => err)
-
+    return await axios
+      .get(
+        `https://ali-service-ey1c.onrender.com/api/team2/products/${productId}`,
+        { headers: { Authorization: headers.token } }
+      )
+      .then((res) => res)
+      .catch((err) => err);
   }
 
   // get categories
@@ -65,32 +62,34 @@ export function ProductsContextProvider(props) {
   async function getCate() {
     const { data } = await axios.get(
       `https://ali-service-ey1c.onrender.com/api/team2/categories?limit=100`,
-      { headers: { 'Authorization': headers.token } }
+      { headers: { Authorization: headers.token } }
     );
     setCategories(data.data);
   }
 
   // add pro
-
   const addNewProduct = async (values) => {
-
-    return await axios.post(
-      `https://ali-service-ey1c.onrender.com/api/team2/products`,
-      values,
-      { headers: { 'Authorization': headers.token } }
-    ).then(res => res).catch(err => err)
-
+    return await axios
+      .post(
+        `https://ali-service-ey1c.onrender.com/api/team2/products`,
+        values,
+        { headers: { Authorization: headers.token } }
+      )
+      .then((res) => res)
+      .catch((err) => err);
   };
 
-
   // Edite
-  const editeProduct = async (id,values) => {
-console.log(id,values)
-    return await axios.put(
-      `https://ali-service-ey1c.onrender.com/api/team2/products/${id}`,values,
-      { headers: { 'Authorization': headers.token } }
-    ).then(res => res).catch(err => err)
-
+  const editeProduct = async (id, values) => {
+    console.log(id, values);
+    return await axios
+      .put(
+        `https://ali-service-ey1c.onrender.com/api/team2/products/${id}`,
+        { values },
+        { headers: { Authorization: headers.token } }
+      )
+      .then((res) => res)
+      .catch((err) => err);
   };
 
   return (
@@ -103,8 +102,7 @@ console.log(id,values)
         editeProduct,
         categories,
         getCate,
-        getOneProduct
-
+        getOneProduct,
       }}
     >
       {props.children}
