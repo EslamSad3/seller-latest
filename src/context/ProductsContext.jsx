@@ -27,7 +27,7 @@ export function ProductsContextProvider(props) {
 
   // const [products, setProducts] = useState([]);
   async function getProducts(uId) {
-    console.log(uId)
+    // console.log(uId)
     return await axios.get(
       `https://ali-service-ey1c.onrender.com/api/team2/products?seller=${uId}`,
       { headers: { 'Authorization': headers.token } }
@@ -82,6 +82,17 @@ export function ProductsContextProvider(props) {
 
   };
 
+
+  // Edite
+  const editeProduct = async (id,values) => {
+console.log(id,values)
+    return await axios.put(
+      `https://ali-service-ey1c.onrender.com/api/team2/products/${id}`,values,
+      { headers: { 'Authorization': headers.token } }
+    ).then(res => res).catch(err => err)
+
+  };
+
   return (
     <productsContext.Provider
       value={{
@@ -89,6 +100,7 @@ export function ProductsContextProvider(props) {
         getProducts,
         deleteProduct,
         addNewProduct,
+        editeProduct,
         categories,
         getCate,
         getOneProduct

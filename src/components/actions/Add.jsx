@@ -10,7 +10,7 @@ function Add() {
 
   async function addProduct(values) {
     const res = await addNewProduct(values)
-    console.log(res)
+    // console.log(res)
   }
 
 
@@ -199,7 +199,7 @@ function Add() {
                     aria-label="Default select example"
                   >
                     {categories.map((cat) => {
-                      return <option value={cat._id}>{cat.name}</option>;
+                      return <option value={formik.values.cat._id}>{cat.name}</option>;
                     })}
                   </select>
                 </div>

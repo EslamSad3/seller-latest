@@ -25,13 +25,6 @@ function SideBar() {
             <h6 className="h6">ADD New Product</h6>
           </div>
         </Link>
-        <Link style={{ textDecoration: "none", color: "black" }} to="/update">
-          {" "}
-          <div className="fix-display">
-            <i className="fa-solid fa-pen-nib"></i>
-            <h6 className="h6">Update Product</h6>
-          </div>
-        </Link>
       </section>
 
       <section className="text-center my-5">

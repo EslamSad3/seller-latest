@@ -14,7 +14,7 @@ function AllProducts() {
   const gellAllProducts = async () => {
     const userId = saveUserData()
     const res = await getProducts(userId)
-    console.log(res)
+    // console.log(res)
     setProducts(res.data.Products)
   }
 
@@ -32,7 +32,7 @@ function AllProducts() {
     let userlogintoken = localStorage.getItem("UserToken");
     if (userlogintoken) {
       let decodedToken = jwtDecode(userlogintoken);
-      console.log(decodedToken.userId);
+      // console.log(decodedToken.userId);
       return decodedToken.userId;
     }
   }
