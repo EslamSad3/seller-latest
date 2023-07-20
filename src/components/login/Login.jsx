@@ -1,31 +1,46 @@
 import axios from "axios";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router";
+import { productsContext } from "../../context/ProductsContext";
+import { useContext } from "react";
+
 function Login() {
   const navigate = useNavigate();
-  async function handleLogin(values) {
-    try {
-      const response = await axios.post(
-        `https://ali-service-ey1c.onrender.com/api/team2/auth/login`,
-        values
-      );
-      if (response.status === 200) {
-        localStorage.setItem("UserToken", response.data.token);
-        navigate("/");
-      }
-    } catch (error) {
-      if (error.response.status === 401) {
-        console.log("Incorrect email or password");
-      }
+  const { handleLogin, userdata, setuserdata } = useContext(productsContext);
+
+  async function completelogin(values) {
+    const { data } = await handleLogin(values);
+    setuserdata(data.data._id);
+    localStorage.setItem("UserToken", data.token);
+    if(localStorage.getItem("UserToken")){
+      navigate("/")
     }
   }
+
+  // async function handleLogin(values) {
+  //   try {
+  //     const response = await axios.post(
+  //       `https://ali-service-ey1c.onrender.com/api/team2/auth/login`,
+  //       values
+  //     );
+  //     if (response.status === 200) {
+  //       localStorage.setItem("UserToken", response.data.token);
+  //       navigate("/");
+  //     }
+  //   } catch (error) {
+  //     if (error.response.status === 401) {
+  //       console.log("Incorrect email or password");
+  //     }
+  //   }
+  // }
+
   let formik = useFormik({
     initialValues: {
       email: "",
       password: "",
       role: "seller",
     },
-    onSubmit: handleLogin,
+    onSubmit: completelogin,
   });
   return (
     <div className="w-75 mx-auto py-4">

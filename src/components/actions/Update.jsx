@@ -1,17 +1,17 @@
 import React, { useContext, useState } from 'react'
 import { productsContext } from '../../context/ProductsContext';
+import { useNavigate } from 'react-router-dom';
 
 
-function Update() {
+ function Update() {
 
-  const {products  } = useContext(productsContext);
-
-console.log(products);
+const {updateProduct,pro}   = useContext(productsContext);
+console.log(pro);
   return (
     <div>
-     {/* {products.map((item)=>{
-        return <h1>{item.name}</h1>
-     })} */}
+     
+        {/* <h1>{pro.name}</h1> */}
+     
     </div>
   )
 }
