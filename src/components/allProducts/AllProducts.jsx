@@ -2,24 +2,48 @@ import React, { useContext, useEffect, useState } from "react";
 import { productsContext } from "../../context/ProductsContext";
 import SideBar from "../sidebar/SideBar";
 import { Link, useNavigate } from "react-router-dom";
+import jwtDecode from "jwt-decode";
+
 
 function AllProducts() {
-  // const [products, setProducts] = useState([]);
+
   const navigate = useNavigate();
-  const { getData, deleteProduct, updateProduct,products } = useContext(productsContext);
-  // async function getAllData() {
-  //   const { data } = await getData();
-  //   setProducts(data.Products);
-  //   console.log(products);
-  // }
-  function deleteSelectedItem(id) {
-    deleteProduct(id);
-    getData()
+  const [products, setProducts] = useState([])
+  const { getProducts, deleteProduct } = useContext(productsContext);
+
+  const gellAllProducts = async () => {
+    const userId = saveUserData()
+    const res = await getProducts(userId)
+    console.log(res)
+    setProducts(res.data.Products)
   }
+
+  const deleteSelectedItem = async (id) => {
+
+    await deleteProduct(id)
+    gellAllProducts()
+  }
+
+  function saveUserData() {
+    let userlogintoken = localStorage.getItem("UserToken");
+    if (userlogintoken) {
+      let decodedToken = jwtDecode(userlogintoken);
+      console.log(decodedToken.userId);
+      return decodedToken.userId;
+    }
+  }
+
   useEffect(() => {
-    getData()
-    // getAllData();
+    if (!localStorage.getItem("UserToken")) navigate("/login")
+    else {
+
+      gellAllProducts()
+    }
+
   }, []);
+
+
+
   return (
     <>
       <div className="container">
@@ -60,7 +84,7 @@ function AllProducts() {
                           <div className="d-flex justify-content-around ">
                             <Link to="/update">
                               <button
-                                onClick={() => updateProduct(item._id)}
+                                // onClick={() => updateProduct(item._id)}
                                 className="btn border border-5 rounded-5"
                               >
                                 <i className="fa-solid fa-pen-nib"></i>

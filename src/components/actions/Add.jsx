@@ -5,7 +5,17 @@ import SideBar from "../sidebar/SideBar";
 import { useNavigate } from "react-router-dom";
 
 function Add() {
-  const { getCate, AddPro, categories, headers } = useContext(productsContext);
+  const { getCate, addNewProduct, categories } = useContext(productsContext);
+
+
+  async function addProduct(values) {
+    const res = await addNewProduct(values)
+    console.log(res)
+  }
+
+
+
+
 
   let formik = useFormik({
     initialValues: {
@@ -22,7 +32,7 @@ function Add() {
       subcategory: "64acb9f5e8085d57c8828776",
       brand: "64ac1dc0fcf2cb0002db967e",
     },
-    onSubmit: AddPro,
+    onSubmit: addProduct,
   });
 
   useEffect(() => {
