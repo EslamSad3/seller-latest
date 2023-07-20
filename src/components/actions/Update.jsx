@@ -1,17 +1,28 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { productsContext } from '../../context/ProductsContext';
-import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 
- function Update() {
+function Update() {
+  const { getOneProduct } = useContext(productsContext);
+  const { id } = useParams()
+  console.log(`params ${id}`)
+  const getProduct = async () => {
+    const res = await getOneProduct(id)
+    console.log(res)
+  }
 
-const {updateProduct,pro}   = useContext(productsContext);
-console.log(pro);
+  useEffect(() => {
+    getProduct()
+
+  }, [])
+
+
   return (
     <div>
-     
-        {/* <h1>{pro.name}</h1> */}
-     
+      <h1>Welcome to update</h1>
+
+
     </div>
   )
 }

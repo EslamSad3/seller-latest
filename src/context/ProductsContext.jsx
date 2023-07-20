@@ -1,6 +1,6 @@
 import axios from "axios";
 // import jwtDecode from "jwt-decode";
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useState } from "react";
 // import { toast } from "react-hot-toast";
 
 
@@ -49,15 +49,15 @@ export function ProductsContextProvider(props) {
 
   // update
 
-  // const [pro, setpro] = useState(null);
 
-  // async function updateProduct(productId) {
-  //   const { data } = await axios.get(
-  //     `https://ali-service-ey1c.onrender.com/api/team2/products/${productId}`,
-  //     { headers }
-  //   );
-  //   setpro(data);
-  // }
+  async function getOneProduct(productId) {
+    return await axios.get(
+      `https://ali-service-ey1c.onrender.com/api/team2/products/${productId}`,
+      { headers: { 'Authorization': headers.token } }
+    ).then(res => res).catch(err => err)
+
+  }
+
   // get categories
 
   const [categories, setCategories] = useState([]);
@@ -90,7 +90,8 @@ export function ProductsContextProvider(props) {
         deleteProduct,
         addNewProduct,
         categories,
-        getCate
+        getCate,
+        getOneProduct
 
       }}
     >

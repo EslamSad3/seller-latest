@@ -18,6 +18,10 @@ function AllProducts() {
     setProducts(res.data.Products)
   }
 
+  const handleDetails = (id) => {
+    navigate(`/update/${id}`);
+  };
+
   const deleteSelectedItem = async (id) => {
 
     await deleteProduct(id)
@@ -82,14 +86,14 @@ function AllProducts() {
                         <td>{item.price}</td>
                         <td className="text-center">
                           <div className="d-flex justify-content-around ">
-                            <Link to="/update">
-                              <button
-                                // onClick={() => updateProduct(item._id)}
-                                className="btn border border-5 rounded-5"
-                              >
-                                <i className="fa-solid fa-pen-nib"></i>
-                              </button>
-                            </Link>
+
+                            <button
+                              onClick={() => handleDetails(item._id)}
+                              className="btn border border-5 rounded-5"
+                            >
+                              <i className="fa-solid fa-pen-nib"></i>
+                            </button>
+
                             <button
                               onClick={() => deleteSelectedItem(item._id)}
                               className="btn border border-5 rounded-5"
