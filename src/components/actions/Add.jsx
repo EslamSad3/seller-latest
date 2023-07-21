@@ -80,8 +80,11 @@ export default function Add() {
       }
     }
 
+    if (file) {
 
-    fd.append('imageCover', file)
+      fd.append('imageCover', file)
+    }
+
     fd.append('name', values.name)
     fd.append('quantity', values.quantity)
     fd.append('price', values.price)
