@@ -9,6 +9,7 @@ function AllProducts() {
 
   const navigate = useNavigate();
   const [products, setProducts] = useState([])
+
   const { getProducts, deleteProduct } = useContext(productsContext);
 
   const gellAllProducts = async () => {
@@ -40,7 +41,6 @@ function AllProducts() {
   useEffect(() => {
     if (!localStorage.getItem("UserToken")) navigate("/login")
     else {
-
       gellAllProducts()
     }
 

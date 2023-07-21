@@ -85,7 +85,7 @@ export function ProductsContextProvider(props) {
     return await axios
       .put(
         `https://ali-service-ey1c.onrender.com/api/team2/products/${id}`,
-        { values },
+        values,
         { headers: { Authorization: headers.token } }
       )
       .then((res) => res)
