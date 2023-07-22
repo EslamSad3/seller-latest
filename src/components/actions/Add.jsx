@@ -274,7 +274,7 @@ export default function Add() {
 
 
 
-              <button type="submit" className="btn btn-success text-light">Add product</button>
+              <button type="submit" className="btn btn-success text-light my-3">Add product</button>
             </form>
 
           </div>

@@ -4,30 +4,35 @@ import SideBar from "../sidebar/SideBar";
 import { Link, useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 
-
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 function AllProducts() {
+  // toast
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const navigate = useNavigate();
-  const [products, setProducts] = useState([])
+  const [products, setProducts] = useState([]);
 
   const { getProducts, deleteProduct } = useContext(productsContext);
 
   const gellAllProducts = async () => {
-    const userId = saveUserData()
-    const res = await getProducts(userId)
+    const userId = saveUserData();
+    const res = await getProducts(userId);
     // console.log(res)
-    setProducts(res.data.Products)
-  }
+    setProducts(res.data.Products);
+  };
 
   const handleDetails = (id) => {
     navigate(`/update/${id}`);
   };
 
   const deleteSelectedItem = async (id) => {
-
-    await deleteProduct(id)
-    gellAllProducts()
-  }
+    await deleteProduct(id);
+    handleClose()
+    gellAllProducts();
+  };
 
   function saveUserData() {
     let userlogintoken = localStorage.getItem("UserToken");
@@ -39,17 +44,38 @@ function AllProducts() {
   }
 
   useEffect(() => {
-    if (!localStorage.getItem("UserToken")) navigate("/login")
+    if (!localStorage.getItem("UserToken")) navigate("/login");
     else {
-      gellAllProducts()
+      gellAllProducts();
     }
-
   }, []);
-
-
 
   return (
     <>
+      <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Deletion Confirmation</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Do You Want To Delete This Item ?? 
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="success" onClick={handleClose}>
+            No , Back
+          </Button>
+          {products.map((item, index) => {
+            return <>
+            
+            <Button   onClick={() => deleteSelectedItem(item._id)}  variant="danger">Yes , Delete</Button>
+            </>
+          })}
+        </Modal.Footer>
+      </Modal>
       <div className="container">
         <div className="row m-0 d-flex justify-content-between">
           <div
@@ -86,19 +112,19 @@ function AllProducts() {
                         <td>{item.price}</td>
                         <td className="text-center">
                           <div className="d-flex justify-content-around ">
-
                             <button
                               onClick={() => handleDetails(item._id)}
-                              className="btn border border-5 rounded-5"
+                              className="btn btn-warning border  rounded-2"
                             >
-                              <i className="fa-solid fa-pen-nib"></i>
+                              <span>Update</span>
                             </button>
 
                             <button
-                              onClick={() => deleteSelectedItem(item._id)}
-                              className="btn border border-5 rounded-5"
+                              // onClick={() => deleteSelectedItem(item._id)}
+                              onClick={() => handleShow()}
+                              className="btn btn-danger border  rounded-2"
                             >
-                              <i className="fa-solid fa-trash-can"></i>
+                              <span>Delete</span>
                             </button>
                           </div>
                         </td>
