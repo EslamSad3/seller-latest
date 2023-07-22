@@ -5,6 +5,7 @@ import { useFormik } from "formik";
 import axios from "axios";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import { toast } from "react-hot-toast";
 
 function Update() {
   const navigate = useNavigate();
@@ -82,7 +83,6 @@ function Update() {
   };
 
   const updateProduct = async (fd) => {
-
     return await axios
       .put(
         `https://ali-service-ey1c.onrender.com/api/team2/products/${id}`,
@@ -94,12 +94,19 @@ function Update() {
         }
       )
 
-      .then((res) => navigate("/"))
+      .then((res) => {
+        if (res.status === 200) {
+          toast.success(`${res.data.data.name} Updated successfully`, {
+            position: "top-center",
+            duration: 2000,
+          });
+        }
+        navigate("/");
+      })
       .catch((err) => console.log(err));
   };
 
   async function handelUpdate(values) {
-
     const fd = new FormData();
     if (files) {
       for (let i = 0; i < files.length; i++) {

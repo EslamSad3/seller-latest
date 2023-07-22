@@ -4,6 +4,8 @@ import SideBar from "../sidebar/SideBar";
 import { useFormik } from "formik";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import { toast } from "react-hot-toast";
+// import { ToastContainer, toast } from "react-toastify";
 // import * as Yup from "yup"
 
 export default function Add() {
@@ -12,8 +14,6 @@ export default function Add() {
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
   const [brands, setBrands] = useState([]);
-
-  const [respo, setrespo] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -80,9 +80,13 @@ export default function Add() {
           },
         }
       );
-      console.log(response.status);
-      setrespo(response.status);
-      console.log(`states ${respo}`);
+      if (response.status === 201) {
+        toast.success(`${response.data.data.name} added successfully`, {
+          position: "top-center",
+          duration: 2000,
+        });
+      }
+
       navigate("/");
     } catch (error) {
       console.log(error);

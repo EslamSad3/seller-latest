@@ -1,6 +1,7 @@
 import axios from "axios";
 // import jwtDecode from "jwt-decode";
 import React, { createContext, useState } from "react";
+import { toast } from "react-hot-toast";
 // import { toast } from "react-hot-toast";
 
 export let productsContext = createContext();
@@ -39,7 +40,14 @@ export function ProductsContextProvider(props) {
         `https://ali-service-ey1c.onrender.com/api/team2/products/${id}`,
         { headers: { Authorization: headers.token } }
       )
-      .then((response) => response)
+      .then((response) => {
+        if (response.status === 204) {
+          toast.success(`Deleted `, {
+            position: "top-center",
+            duration: 2000,
+          });
+        }
+      })
       .catch((err) => err);
   }
 
