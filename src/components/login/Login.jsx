@@ -12,8 +12,20 @@ function Login() {
   async function completelogin(values) {
     const { data } = await handleLogin(values);
     localStorage.setItem("UserToken", data.token);
-    navigate("/")
+    saveUserData()
+    
   }
+
+  function saveUserData() {
+    let userlogintoken = localStorage.getItem("UserToken");
+    if (userlogintoken) {
+      let decodedToken = jwtDecode(userlogintoken);
+      if (decodedToken.role !== "seller"){
+        navigate("/login")
+      } else navigate("/")
+    }
+  }
+  
 
   let formik = useFormik({
     initialValues: {
