@@ -6,6 +6,7 @@ import jwtDecode from "jwt-decode";
 
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import PaginationComponent from "../Pagination/Pagination";
 function AllProducts() {
   // toast
   const [show, setShow] = useState(false);
@@ -16,13 +17,17 @@ function AllProducts() {
   const [deleteID, setdeleteID] = useState("");
   const [data, setdata] = useState(products);
 
-  const { getProducts, deleteProduct } = useContext(productsContext);
+  const { getProducts, deleteProduct, getPage, page } = useContext(productsContext);
 
   const gellAllProducts = async () => {
     const userId = saveUserData();
     const res = await getProducts(userId);
     setProducts(res.data.Products);
   };
+
+
+
+
 
   const handleDetails = (id) => {
     navigate(`/update/${id}`);
@@ -63,7 +68,7 @@ function AllProducts() {
     else {
       gellAllProducts();
     }
-  }, []);
+  }, [page]);
 
   return (
     <>
@@ -150,6 +155,7 @@ function AllProducts() {
           </div>
         </div>
       </div>
+      <PaginationComponent getPage={getPage} />
     </>
   );
 }

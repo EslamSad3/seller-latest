@@ -6,6 +6,16 @@ import { toast } from "react-hot-toast";
 
 export let productsContext = createContext();
 export function ProductsContextProvider(props) {
+  const [page, setPage] = useState();
+  const getPage = (page) => {
+    setPage(page);
+  };
+
+
+
+
+
+
   const headers = {
     token: `Bearer ${localStorage.getItem("UserToken")}`,
   };
@@ -25,7 +35,13 @@ export function ProductsContextProvider(props) {
     // console.log(uId)
     return await axios
       .get(
-        `https://ali-service-ey1c.onrender.com/api/team2/products?seller=${uId}`,
+        `https://ali-service-ey1c.onrender.com/api/team2/products?seller=${uId}&limit=4`,
+        {
+          params: {
+
+            page: page
+          },
+        },
         { headers: { Authorization: headers.token } }
       )
       .then((response) => response)
@@ -111,6 +127,8 @@ export function ProductsContextProvider(props) {
         categories,
         getCate,
         getOneProduct,
+        getPage,
+        page
       }}
     >
       {props.children}
