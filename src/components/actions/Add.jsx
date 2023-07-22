@@ -12,6 +12,8 @@ export default function Add() {
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
   const [brands, setBrands] = useState([]);
+
+  const [respo, setrespo] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -54,17 +56,37 @@ export default function Add() {
     }
   };
 
+  // const addNewProduct = async (fd) => {
+  //   return await axios
+  //     .post(`https://ali-service-ey1c.onrender.com/api/team2/products`, fd, {
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("UserToken")}`,
+  //       },
+  //     })
+  //     .then((res) => {
+  //       navigate("/");
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
+
   const addNewProduct = async (fd) => {
-    return await axios
-      .post(`https://ali-service-ey1c.onrender.com/api/team2/products`, fd, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("UserToken")}`,
-        },
-      })
-      .then((res) => {
-        navigate("/");
-      })
-      .catch((err) => console.log(err));
+    try {
+      const response = await axios.post(
+        `https://ali-service-ey1c.onrender.com/api/team2/products`,
+        fd,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("UserToken")}`,
+          },
+        }
+      );
+      console.log(response.status);
+      setrespo(response.status);
+      console.log(`states ${respo}`);
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   async function handelAdd(values) {
