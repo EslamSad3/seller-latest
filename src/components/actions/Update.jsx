@@ -27,7 +27,7 @@ function Update() {
       })
       .then((res) => {
         setRes(res);
-        console.log(res);
+
         formik.initialValues.name = res.data.name;
         formik.initialValues.category = res.data.category;
         formik.initialValues.subcategory = res.data.subcategory;
@@ -82,7 +82,7 @@ function Update() {
   };
 
   const updateProduct = async (fd) => {
-    console.log(fd);
+
     return await axios
       .put(
         `https://ali-service-ey1c.onrender.com/api/team2/products/${id}`,
@@ -99,7 +99,7 @@ function Update() {
   };
 
   async function handelUpdate(values) {
-    console.log(values);
+
     const fd = new FormData();
     if (files) {
       for (let i = 0; i < files.length; i++) {

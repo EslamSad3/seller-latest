@@ -10,17 +10,17 @@ function AllProducts() {
   // toast
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
+  const [deleteID, setdeleteID] = useState("");
+  const [data, setdata] = useState(products);
 
   const { getProducts, deleteProduct } = useContext(productsContext);
 
   const gellAllProducts = async () => {
     const userId = saveUserData();
     const res = await getProducts(userId);
-    // console.log(res)
     setProducts(res.data.Products);
   };
 
@@ -28,9 +28,25 @@ function AllProducts() {
     navigate(`/update/${id}`);
   };
 
-  const deleteSelectedItem = async (id) => {
-    await deleteProduct(id);
-    handleClose()
+  // const deleteSelectedItem = async (id) => {
+  //   console.log(id);
+  //   await deleteProduct(id);
+  //   handleClose();
+  //   gellAllProducts();
+  // };
+
+  const handleClickDelete = (id) => {
+    setdeleteID(id);
+    setShow(true);
+  };
+
+  const handleDeleteItem = async () => {
+    setdata((pre) => {
+      const newArr = [...pre];
+      return newArr.filter((item) => item._id !== deleteID);
+    });
+    await deleteProduct(deleteID);
+    handleClose();
     gellAllProducts();
   };
 
@@ -38,7 +54,6 @@ function AllProducts() {
     let userlogintoken = localStorage.getItem("UserToken");
     if (userlogintoken) {
       let decodedToken = jwtDecode(userlogintoken);
-      // console.log(decodedToken.userId);
       return decodedToken.userId;
     }
   }
@@ -61,21 +76,17 @@ function AllProducts() {
         <Modal.Header closeButton>
           <Modal.Title>Deletion Confirmation</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          Do You Want To Delete This Item ?? 
-        </Modal.Body>
+        <Modal.Body>Do You Want To Delete This Item ??</Modal.Body>
         <Modal.Footer>
           <Button variant="success" onClick={handleClose}>
             No , Back
           </Button>
-          {products.map((item, index) => {
-            return <>
-            
-            <Button   onClick={() => deleteSelectedItem(item._id)}  variant="danger">Yes , Delete</Button>
-            </>
-          })}
+          <Button variant="danger" onClick={handleDeleteItem}>
+            Yes , Delete
+          </Button>
         </Modal.Footer>
       </Modal>
+
       <div className="container">
         <div className="row m-0 d-flex justify-content-between">
           <div
@@ -121,7 +132,9 @@ function AllProducts() {
 
                             <button
                               // onClick={() => deleteSelectedItem(item._id)}
-                              onClick={() => handleShow()}
+                              onClick={() => {
+                                handleClickDelete(item._id);
+                              }}
                               className="btn btn-danger border  rounded-2"
                             >
                               <span>Delete</span>

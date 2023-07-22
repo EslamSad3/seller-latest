@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import SideBar from "../sidebar/SideBar";
 
@@ -8,26 +7,24 @@ import { useNavigate } from "react-router";
 // import * as Yup from "yup"
 
 export default function Add() {
-  const [file, setfile] = useState(null)
-  const [files, setfiles] = useState(null)
-
+  const [file, setfile] = useState(null);
+  const [files, setfiles] = useState(null);
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
   const [brands, setBrands] = useState([]);
-  const navigate = useNavigate()
-
-
+  const navigate = useNavigate();
 
   useEffect(() => {
-
     getCategory();
     getBrands();
-    getSubCategory()
+    getSubCategory();
   }, []);
 
   const getCategory = async () => {
     try {
-      const response = await axios.get(`https://ali-service-ey1c.onrender.com/api/team2/categories?limit=15`);
+      const response = await axios.get(
+        `https://ali-service-ey1c.onrender.com/api/team2/categories?limit=15`
+      );
       setCategories(response.data.data);
       // console.log(response);
     } catch (error) {
@@ -36,7 +33,9 @@ export default function Add() {
   };
   const getSubCategory = async () => {
     try {
-      const response = await axios.get(`https://ali-service-ey1c.onrender.com/api/team2/subcategories`);
+      const response = await axios.get(
+        `https://ali-service-ey1c.onrender.com/api/team2/subcategories`
+      );
       setSubCategories(response.data);
       // console.log(response);
     } catch (error) {
@@ -45,7 +44,9 @@ export default function Add() {
   };
   const getBrands = async () => {
     try {
-      const response = await axios.get(`https://ali-service-ey1c.onrender.com/api/team2/brands`);
+      const response = await axios.get(
+        `https://ali-service-ey1c.onrender.com/api/team2/brands`
+      );
       setBrands(response.data.data);
       // console.log(response);
     } catch (error) {
@@ -53,58 +54,44 @@ export default function Add() {
     }
   };
 
-
-
   const addNewProduct = async (fd) => {
-    console.log(fd)
     return await axios
-      .post(
-        `https://ali-service-ey1c.onrender.com/api/team2/products`,
-        fd,
-        { headers: { Authorization: `Bearer ${localStorage.getItem("UserToken")}` } }
-      )
-      .then((res) => navigate("/"))
+      .post(`https://ali-service-ey1c.onrender.com/api/team2/products`, fd, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("UserToken")}`,
+        },
+      })
+      .then((res) => {
+        navigate("/");
+      })
       .catch((err) => console.log(err));
   };
 
-
-
-  async function handelRegister(values) {
-
-    console.log(values);
-
-    const fd = new FormData()
+  async function handelAdd(values) {
+    const fd = new FormData();
     if (files) {
       for (let i = 0; i < files.length; i++) {
-        fd.append('images', files[i])
+        fd.append("images", files[i]);
       }
     }
 
     if (file) {
-
-      fd.append('imageCover', file)
+      fd.append("imageCover", file);
     }
 
-    fd.append('name', values.name)
-    fd.append('quantity', values.quantity)
-    fd.append('price', values.price)
-    fd.append('description', values.description)
-    fd.append('priceAfterDiscount', values.priceAfterDiscount)
-    fd.append('category', values.category)
-    fd.append('brand', values.brand)
-    fd.append('subcategory', values.subcategory)
+    fd.append("name", values.name);
+    fd.append("quantity", values.quantity);
+    fd.append("price", values.price);
+    fd.append("description", values.description);
+    fd.append("priceAfterDiscount", values.priceAfterDiscount);
+    fd.append("category", values.category);
+    fd.append("brand", values.brand);
+    fd.append("subcategory", values.subcategory);
 
-    await addNewProduct(fd)
-
-
-
-
-
-  };
-
+    await addNewProduct(fd);
+  }
 
   let formik = useFormik({
-
     initialValues: {
       name: "",
       quantity: "",
@@ -120,12 +107,8 @@ export default function Add() {
       // imageCover: "",
     },
 
-    onSubmit: handelRegister,
-
-
+    onSubmit: handelAdd,
   });
-
-
 
   return (
     <div className="container">
@@ -141,8 +124,6 @@ export default function Add() {
           <div className="w-75 mx-auto py-4">
             <h3>Add New Product</h3>
             <form onSubmit={formik.handleSubmit}>
-
-
               <label htmlFor="name">Name:</label>
               <input
                 className="form-control mb-2"
@@ -154,8 +135,6 @@ export default function Add() {
                 id="name"
               />
 
-
-
               <label htmlFor="quantity">quantity:</label>
               <input
                 className="form-control mb-2"
@@ -166,8 +145,6 @@ export default function Add() {
                 name="quantity"
                 id="quantity"
               />
-
-
 
               <label htmlFor="price">price:</label>
               <input
@@ -205,7 +182,6 @@ export default function Add() {
               <label htmlFor="category">category:</label>
               <select
                 onChange={formik.handleChange}
-
                 value={formik.values.category}
                 id="category"
                 className="form-control my-1"
@@ -217,7 +193,6 @@ export default function Add() {
                   </option>
                 ))}
               </select>
-
 
               <label htmlFor="subcategory">subcategory:</label>
               <select
@@ -253,7 +228,9 @@ export default function Add() {
               <input
                 className="form-control mb-2"
                 value={formik.values.imageCover}
-                onChange={(e) => { setfile(e.target.files[0]) }}
+                onChange={(e) => {
+                  setfile(e.target.files[0]);
+                }}
                 onBlur={formik.handleBlur}
                 type="file"
                 name="imageCover"
@@ -264,25 +241,22 @@ export default function Add() {
                 className="form-control mb-2"
                 multiple
                 value={formik.values.images}
-                onChange={(e) => { setfiles(e.target.files) }}
+                onChange={(e) => {
+                  setfiles(e.target.files);
+                }}
                 onBlur={formik.handleBlur}
                 type="file"
                 name="images"
                 id="images"
               />
 
-
-
-
-              <button type="submit" className="btn btn-success text-light my-3">Add product</button>
+              <button type="submit" className="btn btn-success text-light my-3">
+                Add product
+              </button>
             </form>
-
           </div>
         </div>
-
       </div>
     </div>
   );
 }
-
-
