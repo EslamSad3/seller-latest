@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import SideBar from "../sidebar/SideBar";
-
 import { useFormik } from "formik";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { toast } from "react-hot-toast";
-// import { ToastContainer, toast } from "react-toastify";
-// import * as Yup from "yup"
 
 export default function Add() {
   const [file, setfile] = useState(null);
@@ -19,7 +16,7 @@ export default function Add() {
   useEffect(() => {
     getCategory();
     getBrands();
-    getSubCategory();
+    // getSubCategory();
   }, []);
 
   const getCategory = async () => {
@@ -33,17 +30,17 @@ export default function Add() {
       // Handle error
     }
   };
-  const getSubCategory = async () => {
-    try {
-      const response = await axios.get(
-        `https://ali-service-ey1c.onrender.com/api/team2/subcategories`
-      );
-      setSubCategories(response.data);
-      // console.log(response);
-    } catch (error) {
-      // Handle error
-    }
-  };
+  // const getSubCategory = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       `https://ali-service-ey1c.onrender.com/api/team2/subcategories`
+  //     );
+  //     setSubCategories(response.data);
+  //     // console.log(response);
+  //   } catch (error) {
+  //     // Handle error
+  //   }
+  // };
   const getBrands = async () => {
     try {
       const response = await axios.get(
@@ -136,6 +133,19 @@ export default function Add() {
     onSubmit: handelAdd,
   });
 
+  const handleOnChange = async (event) => {
+    if (event.target.id === "category") {
+      console.log("Form::onChange", event.target.value);
+
+      await axios
+        .get(
+          `https://ali-service-ey1c.onrender.com/api/team2/categories/${event.target.value}/subcategories`
+        )
+        .then((res) => setSubCategories(res.data))
+        .catch((err) => console.log(err));
+    }
+  };
+ 
   return (
     <div className="container">
       <div className="row m-0 d-flex justify-content-between">
@@ -149,7 +159,7 @@ export default function Add() {
         <div className="col-8">
           <div className="w-75 mx-auto py-4">
             <h3>Add New Product</h3>
-            <form onSubmit={formik.handleSubmit}>
+            <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
               <label htmlFor="name">Name:</label>
               <input
                 className="form-control mb-2"

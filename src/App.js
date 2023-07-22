@@ -8,14 +8,36 @@ import AllProducts from "./components/allProducts/AllProducts";
 import Login from "./components/login/Login";
 import { ProductsContextProvider } from "./context/ProductsContext";
 import Add from "./components/actions/Add";
-import toast, { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from "react-hot-toast";
 import Update from "./components/actions/Update";
+import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
 
 let routers = createBrowserRouter([
-  { path: "/", element: <AllProducts /> },
+  {
+    path: "/",
+    element: (
+      <ProtectedRoute>
+        <AllProducts />
+      </ProtectedRoute>
+    ),
+  },
   { path: "/login", element: <Login /> },
-  { path: "/add", element: <Add /> },
-  { path: "/update/:id", element: <Update /> },
+  {
+    path: "/add",
+    element: (
+      <ProtectedRoute>
+        <Add />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/update/:id",
+    element: (
+      <ProtectedRoute>
+        <Update />
+      </ProtectedRoute>
+    ),
+  },
 ]);
 
 function App() {

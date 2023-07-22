@@ -3,8 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import SideBar from "../sidebar/SideBar";
 import { useFormik } from "formik";
 import axios from "axios";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
 import { toast } from "react-hot-toast";
 
 function Update() {
@@ -45,7 +43,6 @@ function Update() {
     getOneProduct();
     getCategory();
     getBrands();
-    getSubCategory();
   }, []);
 
   const getCategory = async () => {
@@ -59,17 +56,7 @@ function Update() {
       // Handle error
     }
   };
-  const getSubCategory = async () => {
-    try {
-      const response = await axios.get(
-        `https://ali-service-ey1c.onrender.com/api/team2/subcategories`
-      );
-      setSubCategories(response.data);
-      // console.log(response);
-    } catch (error) {
-      // Handle error
-    }
-  };
+
   const getBrands = async () => {
     try {
       const response = await axios.get(
@@ -149,6 +136,18 @@ function Update() {
     onSubmit: handelUpdate,
   });
 
+  const handleOnChange = async (event) => {
+    if (event.target.id === "category") {
+      console.log("Form::onChange", event.target.value);
+
+      await axios
+        .get(
+          `https://ali-service-ey1c.onrender.com/api/team2/categories/${event.target.value}/subcategories`
+        )
+        .then((res) => setSubCategories(res.data))
+        .catch((err) => console.log(err));
+    }
+  };
   return (
     <>
       <div className="container">
@@ -163,7 +162,7 @@ function Update() {
           <div className="col-8">
             <div className="w-75 mx-auto py-4">
               <h3>Update Product</h3>
-              <form onSubmit={formik.handleSubmit}>
+              <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
                 <label htmlFor="name">Name:</label>
                 <input
                   className="form-control mb-2"
